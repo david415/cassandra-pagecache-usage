@@ -1,3 +1,13 @@
+Usage: cassandra_pagecache_usage [options] <cassandra-data-directory>
+
+Options:
+  -h, --help            show this help message and exit
+  -c, --columnfamily-summarize
+                        Summarize cached Cassandra data on a per Column Family
+                        basis.
+  --exclude-filter      Exclude statistics for Cassandra Filter files.
+  --exclude-index       Exclude statistics for Cassandra Index files.
+  --exclude-data        Exclude statistics for Cassandra Data files.
 
 This tool might be useful for debugging Cassandra's usage of Linux page cache.
 
