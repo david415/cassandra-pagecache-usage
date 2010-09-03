@@ -1,0 +1,7 @@
+
+This tool might be useful for debugging Cassandra's usage of Linux page cache.
+
+This tool depends on my fork (git://github.com/david415/linux-ftools.git) of linux-ftools's fincore utility.
+My version of fincore has a more parsable output...
+
+
