@@ -11,7 +11,8 @@ Options:
 
 This tool might be useful for debugging Cassandra's usage of Linux page cache.
 
-This tool depends on my fork (git://github.com/david415/linux-ftools.git) of linux-ftools's fincore utility.
-My version of fincore has a more parsable output...
+This tool depends on python-ftools's fincore_ratio (which implements the
+mincore system call via python C extension): http://github.com/david415/python-ftools
 
+Enjoy!
 
