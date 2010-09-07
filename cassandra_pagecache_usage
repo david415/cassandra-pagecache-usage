@@ -54,24 +54,42 @@ def main():
 
     if options.columnfamily:
         filetypes = {"Index":0,"Filter":0,"Data":0}
-
-        # data files look like this: Counts-2374-Data.db 
         cassandra_file = re.compile("^.+/(\w+)-\d+-(%s)\.db$" % filetypes_filter)
         columnfamily_hash = {}
-        for filename in fileList:
-            mymatch = cassandra_file.match(filename)
-            if mymatch:
-                fd = file(filename)
-                pages_cached,pages_total = fincore.fincore_ratio(fd.fileno())
-                fd.close()
-                if columnfamily_hash.has_key(mymatch.group(1)):
-                    columnfamily_hash[mymatch.group(1)] += (pages_cached * page_size)
-                else:
-                    columnfamily_hash[mymatch.group(1)] = (pages_cached * page_size)
+    else:
+        file_hash = {}
 
+    for filename in fileList:
+
+        if options.columnfamily:
+            mymatch = cassandra_file.match(filename)
+            if not mymatch:
+                continue
+        else:
+            if filename.endswith('-Compacted'):
+                continue
+
+        fd = file(filename)
+        pages_cached,pages_total = fincore.fincore_ratio(fd.fileno())
+        fd.close()
+
+        if options.columnfamily:
+            if columnfamily_hash.has_key(mymatch.group(1)):
+                columnfamily_hash[mymatch.group(1)] += (pages_cached * page_size)
+            else:
+                columnfamily_hash[mymatch.group(1)] = (pages_cached * page_size)
+        else:
+            if file_hash.has_key(filename):
+                file_hash[filename] += (pages_cached * page_size)
+            else:
+                file_hash[filename] = (pages_cached * page_size)
+
+    if options.columnfamily:
         for k,v in sorted(columnfamily_hash.items(), key=lambda x:x[1], reverse=True):
             print "%s %s" % (k,v)
-
+    else:
+        for k,v in sorted(file_hash.items(), key=lambda x:x[1], reverse=True):
+            print "%s %s" % (k,v)
 
     return 0
 
