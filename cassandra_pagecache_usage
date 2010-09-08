@@ -63,6 +63,8 @@ def main():
         fd = file(filename)
         pages_cached,pages_total = fincore.fincore_ratio(fd.fileno())
         fd.close()
+        if pages_cached == 0:
+            continue
 
         if options.columnfamily:
             if file_hash.has_key(mymatch.group(1)):
