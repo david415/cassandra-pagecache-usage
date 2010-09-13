@@ -8,7 +8,7 @@ import sys
 from optparse import OptionParser
 import re
 import resource
-import fincore
+import ftools
 
 def main():
     usage = '%prog [options] <cassandra-data-directory>'
