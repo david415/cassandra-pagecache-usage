@@ -113,17 +113,18 @@ def main():
             continue
 
         if options.columnfamily:
+            header = ['Column Family','Bytes in FS page-cache']
             if file_hash.has_key(mymatch.group(1)):
                 file_hash[mymatch.group(1)] += (pages_cached * page_size)
             else:
                 file_hash[mymatch.group(1)] = (pages_cached * page_size)
         else:
+            header = ['Data file','Bytes in FS page-cache']
             if file_hash.has_key(filename):
                 file_hash[filename] += (pages_cached * page_size)
             else:
                 file_hash[filename] = (pages_cached * page_size)
 
-    header = ['Column Family','Bytes in FS page-cache']
     rows = []
     for k,v in sorted(file_hash.items(), key=lambda x:x[1], reverse=True):
         rows.append([k,v])
